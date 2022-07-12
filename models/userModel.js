@@ -31,6 +31,12 @@ const userSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    gender: {
+      type: String,
+    },
+    dateOfBirth: {
+      type: Date,
+    },
     password: {
       type: String,
       required: [true, "Mật khẩu không được để trống"],
