@@ -6,7 +6,8 @@ const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
 const userRouter = require("./routes/userRoutes");
-
+const postRouter = require("./routes/postRoutes");
+const friendRequestRouter = require("./routes/friendRequestRoutes");
 const app = express();
 
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
@@ -16,10 +17,9 @@ app.use(cors());
 
 //ROUTES
 
-app.use("/api/users", userRouter);
-
-// app.use("/api/orders", orderRouter);
-// app.use("/api", viewRouter);
+app.use("/api/friend-request", friendRequestRouter);
+app.use("/api/auth", userRouter);
+app.use("/api/post", postRouter);
 
 //handle not existed routes
 app.all("*", (req, res, next) => {

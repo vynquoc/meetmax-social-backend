@@ -19,6 +19,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Họ và tên không được để trống"],
     },
+
     email: {
       type: String,
       trim: true,
@@ -37,6 +38,15 @@ const userSchema = new Schema(
     dateOfBirth: {
       type: Date,
     },
+    avatar: {
+      type: String,
+    },
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     password: {
       type: String,
       required: [true, "Mật khẩu không được để trống"],

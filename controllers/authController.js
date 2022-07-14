@@ -19,25 +19,37 @@ exports.signup = catchAsync(async (req, res, next) => {
     username: req.body.username,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
+    avatar: req.body.avatar,
+    gender: req.body.gender,
+    dateOfBirth: req.body.dateOfBirth,
   });
 
   const token = createToken(newUser._id);
-
+  const { firstName, lastName, email, dateOfBirth, avatar, gender, username } =
+    newUser;
   res.status(201).json({
     status: "success",
-    token,
     data: {
-      user: newUser,
+      token,
+      user: {
+        firstName,
+        lastName,
+        email,
+        dateOfBirth,
+        avatar,
+        gender,
+        username,
+      },
     },
   });
 });
 
-exports.login = catchAsync(async (req, res, next) => {
-  const username = req.body.username;
+exports.signin = catchAsync(async (req, res, next) => {
+  const email = req.body.email;
   const password = req.body.password;
 
-  //check if username and password exist
-  if (!username || !password) {
+  //check if email and password exist
+  if (!email || !password) {
     return next(new AppError("Tài khoản và mật khẩu không được để trống", 400));
     // return res.status(400).json({
     //     status: 'failed',
@@ -45,7 +57,7 @@ exports.login = catchAsync(async (req, res, next) => {
     // })
   }
   //check if user exits && password is correct
-  const user = await User.findOne({ username }).select("+password");
+  const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Tài khoản hoặc mật khẩu không đúng", 401));
@@ -62,6 +74,9 @@ exports.login = catchAsync(async (req, res, next) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      dob: user.dateOfBirth,
+      gender: user.gender,
+      avatar: user.avatar,
     },
   });
 });
@@ -104,6 +119,8 @@ exports.getUserByToken = catchAsync(async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      avatar: user.avatar,
+      gender: user.gender,
     },
   });
 });
