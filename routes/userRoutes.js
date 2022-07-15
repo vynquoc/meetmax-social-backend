@@ -8,10 +8,11 @@ router.post("/signin", authController.signin);
 
 router.get("/check-token", authController.getUserByToken);
 
+router.route("/").get(userController.getAllUsers);
+
 router
-  .route("/")
-  .get(userController.getAllUsers)
-  .post(userController.createUser);
+  .route("/:username")
+  .get(authController.protect, userController.getUserByUsername);
 
 router
   .route("/:id")

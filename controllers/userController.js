@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const FriendRequest = require("../models/friendRequestModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
@@ -20,6 +21,37 @@ exports.createUser = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     newUser,
+  });
+});
+
+exports.getUserByUsername = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ username: req.params.username });
+  const isFriend = user.friends.some((friend) => friend.equals(req.user.id));
+  let isRecepient, isRequester;
+  if (!user) {
+    return next(new AppError("User not found", 404));
+  }
+
+  if (!isFriend) {
+    isRequester = await FriendRequest.findOne({
+      requester: user,
+      recipient: req.user,
+      status: "pending",
+    });
+    isRecepient = await FriendRequest.findOne({
+      requester: req.user,
+      recepient: user,
+      status: "pending",
+    });
+  }
+
+  res.status(200).json({
+    data: {
+      user,
+      isFriend,
+      isRecepient: isRecepient ? true : false,
+      isRequester: isRequester ? true : false,
+    },
   });
 });
 

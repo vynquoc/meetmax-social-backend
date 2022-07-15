@@ -20,7 +20,7 @@ app.use(cors());
 app.use("/api/friend-request", friendRequestRouter);
 app.use("/api/auth", userRouter);
 app.use("/api/post", postRouter);
-
+app.use("/api/user", userRouter);
 //handle not existed routes
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
