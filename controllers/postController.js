@@ -10,3 +10,15 @@ exports.create = catchAsync(async (req, res, next) => {
     newPost,
   });
 });
+
+exports.getPostList = catchAsync(async (req, res, next) => {
+  const postList = await Post.find({ postedBy: [...req.user.friends] }).sort({
+    createdAt: "desc",
+  });
+
+  res.status(200).json({
+    status: "success",
+    total: postList.length,
+    postList,
+  });
+});

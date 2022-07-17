@@ -57,7 +57,9 @@ exports.signin = catchAsync(async (req, res, next) => {
     // })
   }
   //check if user exits && password is correct
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email })
+    .select("+password")
+    .populate("friends");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Tài khoản hoặc mật khẩu không đúng", 401));
@@ -77,6 +79,7 @@ exports.signin = catchAsync(async (req, res, next) => {
       dob: user.dateOfBirth,
       gender: user.gender,
       avatar: user.avatar,
+      friends: user.friends,
     },
   });
 });
@@ -105,7 +108,7 @@ exports.getUserByToken = catchAsync(async (req, res) => {
   }
 
   //check if user still exists
-  const user = await User.findById(decoded.id);
+  const user = await User.findById(decoded.id).populate("friends");
   if (!user) {
     return res.status(200).json({
       user: {},
@@ -121,6 +124,7 @@ exports.getUserByToken = catchAsync(async (req, res) => {
       email: user.email,
       avatar: user.avatar,
       gender: user.gender,
+      friends: user.friends,
     },
   });
 });

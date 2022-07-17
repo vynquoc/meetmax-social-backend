@@ -16,4 +16,16 @@ router.post(
   friendRequestController.rejectRequest
 );
 
+router.post(
+  "/cancel",
+  authController.protect,
+  friendRequestController.cancelRequest
+);
+
+router.post(
+  "/unfriend",
+  authController.protect,
+  friendRequestController.unfriend
+);
+
 module.exports = router;

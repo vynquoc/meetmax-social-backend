@@ -9,16 +9,22 @@ const postSchema = new Schema(
     photo: {
       type: String,
     },
+
+    likedBy: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     numsLike: {
       type: Number,
+      default: 0,
     },
     numsComment: {
       type: Number,
+      default: 0,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
+
     postedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -27,24 +33,25 @@ const postSchema = new Schema(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    timestamps: true,
   }
 );
 
-// newsSchema.pre(/^find/, function (next) {
-//     this.populate({
-//         path: 'comments'
+postSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "comments",
+  }).populate({
+    path: "postedBy",
+  });
 
-//     }).populate({
-//         path: 'createdBy'
-//     })
-//     next()
-// })
+  next();
+});
 
-// newsSchema.virtual("comments", {
-//   ref: "Comment",
-//   foreignField: "news",
-//   localField: "_id",
-// });
+postSchema.virtual("comments", {
+  ref: "Comment",
+  foreignField: "post",
+  localField: "_id",
+});
 
 const Post = mongoose.model("Post", postSchema);
 module.exports = Post;

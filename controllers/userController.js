@@ -97,3 +97,16 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     deletedUser,
   });
 });
+
+exports.getSuggestionFriendList = catchAsync(async (req, res) => {
+  // const suggestionList = await User.aggregate([
+  //   { $nin: req.user.friends },
+  //   { $sample: { size: 10 } },
+  // ]);
+  const suggestionList = await User.find({
+    _id: { $nin: [...req.user.friends, req.user.id] },
+  });
+  res.status(200).json({
+    suggestionList,
+  });
+});

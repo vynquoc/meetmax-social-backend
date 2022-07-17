@@ -9,11 +9,14 @@ router.post("/signin", authController.signin);
 router.get("/check-token", authController.getUserByToken);
 
 router.route("/").get(userController.getAllUsers);
-
+router.get(
+  "/suggestion-list",
+  authController.protect,
+  userController.getSuggestionFriendList
+);
 router
   .route("/:username")
   .get(authController.protect, userController.getUserByUsername);
-
 router
   .route("/:id")
   .get(userController.getUser)

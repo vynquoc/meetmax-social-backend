@@ -8,6 +8,8 @@ const globalErrorHandler = require("./controllers/errorController");
 const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
 const friendRequestRouter = require("./routes/friendRequestRoutes");
+const commentRouter = require("./routes/commentRoutes");
+const notificationRouter = require("./routes/notificationRoutes");
 const app = express();
 
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
@@ -18,9 +20,11 @@ app.use(cors());
 //ROUTES
 
 app.use("/api/friend-request", friendRequestRouter);
+app.use("/api/user", userRouter);
 app.use("/api/auth", userRouter);
 app.use("/api/post", postRouter);
-app.use("/api/user", userRouter);
+app.use("/api/comment", commentRouter);
+app.use("/api/notification", notificationRouter);
 //handle not existed routes
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
