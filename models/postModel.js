@@ -51,7 +51,9 @@ postSchema.virtual("comments", {
   ref: "Comment",
   foreignField: "post",
   localField: "_id",
+  options: { sort: { createdAt: -1 } },
 });
 
 const Post = mongoose.model("Post", postSchema);
+
 module.exports = Post;

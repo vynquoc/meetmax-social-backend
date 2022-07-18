@@ -36,7 +36,9 @@ exports.update = catchAsync(async (req, res, next) => {
 exports.getNotificationList = catchAsync(async (req, res) => {
   const notificationList = await Notification.find({
     recipient: req.user,
-  }).populate("createdBy");
+  })
+    .populate("createdBy")
+    .sort({ createdAt: -1 });
 
   res.status(200).json({
     total: notificationList.length,
