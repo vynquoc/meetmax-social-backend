@@ -1,6 +1,7 @@
 const Post = require("../models/postModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.create = catchAsync(async (req, res, next) => {
   const newPost = new Post({ ...req.body, postedBy: req.user });
@@ -8,6 +9,38 @@ exports.create = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     newPost,
+  });
+});
+
+exports.addLike = catchAsync(async (req, res, next) => {
+  const post = await Post.findOneAndUpdate(
+    req.params.id,
+    {
+      $push: { likedBy: req.user },
+      $inc: { numsLike: 1 },
+    },
+    { new: true }
+  );
+  if (!post) return next(new AppError("No post found", 404));
+  res.status(200).json({
+    status: "success",
+    updatedPost: post,
+  });
+});
+
+exports.unlike = catchAsync(async (req, res, next) => {
+  const post = await Post.findOneAndUpdate(
+    req.params.id,
+    {
+      $pull: { likedBy: new ObjectId(req.user.id) },
+      $inc: { numsLike: -1 },
+    },
+    { new: true }
+  );
+  if (!post) return next(new AppError("No post found", 404));
+  res.status(200).json({
+    status: "success",
+    updatedPost: post,
   });
 });
 

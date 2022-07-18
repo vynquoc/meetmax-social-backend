@@ -40,9 +40,13 @@ const postSchema = new Schema(
 postSchema.pre(/^find/, function (next) {
   this.populate({
     path: "comments",
-  }).populate({
-    path: "postedBy",
-  });
+  })
+    .populate({
+      path: "postedBy",
+    })
+    .populate({
+      path: "likedBy",
+    });
 
   next();
 });

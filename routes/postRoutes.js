@@ -5,5 +5,7 @@ const router = express.Router();
 
 router.post("/create", authController.protect, postController.create);
 router.get("/getPostList", authController.protect, postController.getPostList);
+router.patch("/:id/like", authController.protect, postController.addLike);
+router.patch("/:id/unlike", authController.protect, postController.unlike);
 
 module.exports = router;
