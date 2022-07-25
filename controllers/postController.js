@@ -12,8 +12,19 @@ exports.create = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getPost = catchAsync(async (req, res, next) => {
+  const post = await Post.findById(req.params.id);
+  if (!post) {
+    return new AppError("Not found", 404);
+  }
+  res.status(200).json({
+    status: "success",
+    post,
+  });
+});
+
 exports.addLike = catchAsync(async (req, res, next) => {
-  const post = await Post.findOneAndUpdate(
+  const post = await Post.findByIdAndUpdate(
     req.params.id,
     {
       $push: { likedBy: req.user },
@@ -21,6 +32,7 @@ exports.addLike = catchAsync(async (req, res, next) => {
     },
     { new: true }
   );
+
   if (!post) return next(new AppError("No post found", 404));
   res.status(200).json({
     status: "success",
@@ -29,7 +41,7 @@ exports.addLike = catchAsync(async (req, res, next) => {
 });
 
 exports.unlike = catchAsync(async (req, res, next) => {
-  const post = await Post.findOneAndUpdate(
+  const post = await Post.findByIdAndUpdate(
     req.params.id,
     {
       $pull: { likedBy: new ObjectId(req.user.id) },

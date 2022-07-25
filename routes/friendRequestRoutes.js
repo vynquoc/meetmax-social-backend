@@ -4,6 +4,12 @@ const authController = require("../controllers/authController");
 
 const router = express.Router();
 
+router.get(
+  "/get-all",
+  authController.protect,
+  friendRequestController.getAllRequests
+);
+
 router.post("/create", authController.protect, friendRequestController.create);
 router.post(
   "/accept",

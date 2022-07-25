@@ -10,6 +10,8 @@ const postRouter = require("./routes/postRoutes");
 const friendRequestRouter = require("./routes/friendRequestRoutes");
 const commentRouter = require("./routes/commentRoutes");
 const notificationRouter = require("./routes/notificationRoutes");
+const conversationRouter = require("./routes/conversationRoutes");
+
 const app = express();
 
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
@@ -19,6 +21,7 @@ app.use(cors());
 
 //ROUTES
 
+app.use("/api/conversation", conversationRouter);
 app.use("/api/friend-request", friendRequestRouter);
 app.use("/api/user", userRouter);
 app.use("/api/auth", userRouter);

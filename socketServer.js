@@ -19,12 +19,25 @@ const SocketServer = (socket) => {
   });
 
   //NOTIFICATION
-  socket.on("send-notification", (notification) => {
+  socket.on("send-comment-notification", (notification) => {
     const recipient = users.find(
       (user) => user.id === notification.recipient.id
     );
     if (recipient) {
-      socket.to(recipient.socketId).emit("push-notification", notification);
+      socket
+        .to(recipient.socketId)
+        .emit("push-comment-notification", notification);
+    }
+  });
+
+  socket.on("send-like-notification", (notification) => {
+    const recipient = users.find(
+      (user) => user.id === notification.recipient.id
+    );
+    if (recipient) {
+      socket
+        .to(recipient.socketId)
+        .emit("push-like-notification", notification);
     }
   });
 };

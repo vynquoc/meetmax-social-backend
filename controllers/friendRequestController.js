@@ -38,12 +38,13 @@ exports.acceptRequest = catchAsync(async (req, res, next) => {
 });
 
 exports.rejectRequest = catchAsync(async (req, res, next) => {
-  const friendRequest = await FriendRequest.findOneAndUpdate(
-    { requester: req.body.requester, recipient: req.user },
-    { status: "rejected" }
-  );
+  const friendRequest = await FriendRequest.findOneAndDelete({
+    requester: req.body.requester,
+    recepient: req.user,
+  });
+  if (!friendRequest) return next(new Error("No friend request found !", 404));
   res.status(200).json({
-    friendRequest,
+    rejected: friendRequest,
   });
 });
 
@@ -68,5 +69,17 @@ exports.unfriend = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "Unfriend successfully",
+  });
+});
+
+exports.getAllRequests = catchAsync(async (req, res, next) => {
+  const friendRequests = await FriendRequest.find({
+    recepient: req.user,
+    status: "pending",
+  }).populate("recepient requester");
+
+  res.status(200).json({
+    status: "success",
+    friendRequests,
   });
 });
