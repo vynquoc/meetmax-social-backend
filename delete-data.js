@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const Notification = require("./models/notificationModel");
 const Comment = require("./models/commentModel");
+const Message = require("./models/messageModel");
 dotenv.config({ path: "./config.env" });
 
 const DB = process.env.DATABASE.replace(
@@ -57,9 +58,9 @@ mongoose
 const deleteData = async () => {
   try {
     // await Comment.deleteMany({ commentBy: "62d03e15c9b9a6e254052610" });
-    const notifs = await Notification.find();
+    const notifs = await Message.find();
     for (let i = 0; i < notifs.length; i++) {
-      await Notification.findByIdAndDelete(notifs[i].id);
+      await Message.findByIdAndDelete(notifs[i].id);
     }
     console.log("Deleted!!!!");
     process.exit();

@@ -11,6 +11,7 @@ const friendRequestRouter = require("./routes/friendRequestRoutes");
 const commentRouter = require("./routes/commentRoutes");
 const notificationRouter = require("./routes/notificationRoutes");
 const conversationRouter = require("./routes/conversationRoutes");
+const messageRouter = require("./routes/messageRoutes");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cors());
 
 //ROUTES
 
+app.use("/api/message", messageRouter);
 app.use("/api/conversation", conversationRouter);
 app.use("/api/friend-request", friendRequestRouter);
 app.use("/api/user", userRouter);

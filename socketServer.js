@@ -40,6 +40,16 @@ const SocketServer = (socket) => {
         .emit("push-like-notification", notification);
     }
   });
+
+  //MESSAGE
+  socket.on("send-message", (message) => {
+    const recipient = users.find(
+      (user) => user.id === notification.recipient.id
+    );
+    if (recipient) {
+      socket.to(recipient.socketId).emit("receive-message", notification);
+    }
+  });
 };
 
 module.exports = SocketServer;

@@ -12,3 +12,12 @@ exports.create = catchAsync(async (req, res, next) => {
     newConversation,
   });
 });
+
+exports.getConversationsOfUser = catchAsync(async (req, res) => {
+  const conversations = await Conversation.find({
+    members: { $in: [req.user] },
+  }).populate("members");
+  res.status(200).json({
+    conversations,
+  });
+});

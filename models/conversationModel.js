@@ -9,6 +9,10 @@ const conversationSchema = new Schema(
         ref: "User",
       },
     ],
+    lastMessage: {
+      type: Schema.Types.ObjectId,
+      ref: "Message",
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -17,15 +21,12 @@ const conversationSchema = new Schema(
   }
 );
 
-// newsSchema.pre(/^find/, function (next) {
-//     this.populate({
-//         path: 'comments'
-
-//     }).populate({
-//         path: 'createdBy'
-//     })
-//     next()
-// })
+conversationSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "lastMessage",
+  });
+  next();
+});
 
 // newsSchema.virtual("comments", {
 //   ref: "Comment",
