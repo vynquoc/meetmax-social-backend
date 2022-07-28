@@ -9,5 +9,10 @@ router.get(
   authController.protect,
   conversationController.getConversationsOfUser
 );
+router.post(
+  "/get-conversation",
+  authController.protect,
+  conversationController.getConversation
+);
 
 module.exports = router;

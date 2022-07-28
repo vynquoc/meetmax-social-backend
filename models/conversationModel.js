@@ -28,11 +28,11 @@ conversationSchema.pre(/^find/, function (next) {
   next();
 });
 
-// newsSchema.virtual("comments", {
-//   ref: "Comment",
-//   foreignField: "news",
-//   localField: "_id",
-// });
+conversationSchema.virtual("allMessages", {
+  ref: "Message",
+  foreignField: "conversation",
+  localField: "_id",
+});
 
 const Conversation = mongoose.model("Conversation", conversationSchema);
 module.exports = Conversation;

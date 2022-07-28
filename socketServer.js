@@ -42,12 +42,10 @@ const SocketServer = (socket) => {
   });
 
   //MESSAGE
-  socket.on("send-message", (message) => {
-    const recipient = users.find(
-      (user) => user.id === notification.recipient.id
-    );
+  socket.on("send-message", (data) => {
+    const recipient = users.find((user) => user.id === data.recipient.id);
     if (recipient) {
-      socket.to(recipient.socketId).emit("receive-message", notification);
+      socket.to(recipient.socketId).emit("receive-message", data.newMessage);
     }
   });
 };

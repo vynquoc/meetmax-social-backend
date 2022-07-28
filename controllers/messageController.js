@@ -5,7 +5,7 @@ const AppError = require("../utils/appError");
 
 exports.create = catchAsync(async (req, res, next) => {
   const newMessage = await Message.create({
-    conversationId: req.body.conversationId,
+    conversation: req.body.conversationId,
     content: req.body.content,
     sender: req.user,
   });
@@ -25,7 +25,7 @@ exports.create = catchAsync(async (req, res, next) => {
 
 exports.getMessages = catchAsync(async (req, res, next) => {
   const messages = await Message.find({
-    conversationId: req.params.conversationId,
+    conversation: req.params.conversationId,
   }).populate("sender");
 
   res.status(200).json({
