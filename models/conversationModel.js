@@ -24,6 +24,7 @@ const conversationSchema = new Schema(
 conversationSchema.pre(/^find/, function (next) {
   this.populate({
     path: "lastMessage",
+    populate: { path: "sender", model: "User" },
   });
   next();
 });
