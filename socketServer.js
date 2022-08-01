@@ -2,6 +2,7 @@ let users = [];
 
 const SocketServer = (socket) => {
   socket.on("connect-user", (user) => {
+    console.log(user);
     users.push({ ...user, socketId: socket.id });
   });
 
@@ -20,6 +21,7 @@ const SocketServer = (socket) => {
 
   //NOTIFICATION
   socket.on("send-comment-notification", (notification) => {
+    console.log(users);
     const recipient = users.find(
       (user) => user.id === notification.recipient.id
     );

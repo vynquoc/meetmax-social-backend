@@ -57,11 +57,11 @@ mongoose
 
 const deleteData = async () => {
   try {
-    // await Comment.deleteMany({ commentBy: "62d03e15c9b9a6e254052610" });
-    const notifs = await Message.find();
-    for (let i = 0; i < notifs.length; i++) {
-      await Message.findByIdAndDelete(notifs[i].id);
-    }
+    await Comment.deleteMany({ commentBy: "62d03e15c9b9a6e254052610" });
+    // const notifs = await Comment.find();
+    // for (let i = 0; i < notifs.length; i++) {
+    //   await Comment.findByIdAndDelete(notifs[i].id);
+    // }
     console.log("Deleted!!!!");
     process.exit();
   } catch (error) {
