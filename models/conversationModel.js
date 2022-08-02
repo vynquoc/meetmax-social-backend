@@ -13,6 +13,10 @@ const conversationSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Message",
     },
+    readLastMessage: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     toJSON: { virtuals: true },

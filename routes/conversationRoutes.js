@@ -14,5 +14,5 @@ router.post(
   authController.protect,
   conversationController.getConversation
 );
-
+router.patch(":/id", authController.protect, conversationController.update);
 module.exports = router;

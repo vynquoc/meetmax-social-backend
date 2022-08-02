@@ -12,7 +12,7 @@ exports.create = catchAsync(async (req, res, next) => {
 
   const updatedConversation = await Conversation.findByIdAndUpdate(
     req.body.conversationId,
-    { lastMessage: newMessage },
+    { lastMessage: newMessage, readLastMessage: false },
     { new: true }
   ).populate("members");
   if (!newMessage) return next(new AppError("Something wrongs", 500));

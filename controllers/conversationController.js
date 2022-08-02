@@ -13,6 +13,19 @@ exports.create = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.update = catchAsync(async (req, res, next) => {
+  const updatedConversation = await Conversation.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+
+  res.status(200).json({
+    status: "success",
+    updatedConversation,
+  });
+});
+
 exports.getConversation = catchAsync(async (req, res, next) => {
   let conversation;
   const existedConversation = await Conversation.findOne({
